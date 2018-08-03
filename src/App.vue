@@ -1,9 +1,13 @@
 <template>
   <div id="app">
     <h1>Player ratings</h1>
-    <div v-for="player in data" v-bind:key="player.PlayerID">
-      <p><span>PlayerID</span> {{data.PlayerID}}</p>
-      <p><span>Rating</span> {{data.Rating}}</p>
+    <div id="player" v-for="player in data" v-bind:key="player.PlayerID">
+      <h2>{{player.profile.LastName}}, {{player.profile.FirstName}}</h2>
+      <h3>PPG: {{player.stats.PtsPerGame}}</h3>
+      <h3>APG: {{player.stats.AstPerGame}}</h3>
+      <h4><span>PlayerID</span> {{player.profile.ID}}</h4>
+      <h4><span>Rating</span> {{player.ratings.Rating}}</h4>
+      <img v-bind:src="player.profile.OfficialImageSrc">
       <hr/>
     </div>
   </div>
@@ -19,7 +23,8 @@ export default {
   name: 'App',
   data() {
     return {
-      data:[]
+      data:[],
+      d: []
     }
   },
   methods: {
@@ -59,13 +64,9 @@ export default {
             let playerRatings_ = arr[2];
             console.log('here');
             let payload = [];
-            //let playerRatings = null;
-            //let activePlayers = null;
-            //let playerStats = null;
             for(let i = 0; i < activePlayers_.length; i++) {
               // current is the active player at the ith index
               let current = activePlayers_[i];
-
               let currentPlayerId = current.ID;
               let match1 = null;
               let match2 = null;
@@ -96,7 +97,8 @@ export default {
                 payload.push(result);
               }
             }
-            console.log(payload)
+             console.log(payload[2].profile.OfficialImageSrc);
+            this.data = payload;
           })
         }).catch((err) => {
           throw Error(err);
@@ -120,10 +122,19 @@ export default {
   margin: 10px 20px 20px 10px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  text-align: left;
+}
+
+h1, h2 {
+  font-weight: 900;
+
+}
+
 p {
   text-align: left;
 }
-  p > span {
-    font-weight: 900;
+  #player:nth-child(even){
+    background-color: cornsilk;
   }
 </style>
